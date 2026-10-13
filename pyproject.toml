@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-cyber-sentinel"
+version = "1.0.0"
+description = "Tier-0 Zero-Trust Runtime Security Shield, Prompt Injection Firewall, Secret Leak Interceptor and Tool Call Sanitizer for AI Agents and MCP Servers."
+readme = "README.md"
+authors = [
+    { name = "Benni Alencar & Benni OS Core Engineering Group", email = "engineering@bennios.dev" }
+]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+keywords = [
+    "ai-agents",
+    "cybersecurity",
+    "prompt-injection",
+    "secret-leakage",
+    "ssrf-protection",
+    "mcp",
+    "guardrails",
+    "zero-trust",
+    "benni-os",
+    "llm-security"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed"
+]
+dependencies = [
+    "pydantic>=2.0.0",
+    "click>=8.0.0",
+    "rich>=12.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+cyber-sentinel = "cyber_sentinel.cli.main:cli"
+
+[project.urls]
+Homepage = "https://bennios.dev"
+Repository = "https://github.com/BenniAlencar/agent-cyber-sentinel"
+Documentation = "https://docs.bennios.dev"
+"Operator Hub" = "https://hub.bennios.dev"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cyber_sentinel*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --strict-markers"
