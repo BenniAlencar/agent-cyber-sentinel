@@ -9,7 +9,7 @@
 <br/><br/>
 
 [![CI](https://github.com/BenniAlencar/agent-cyber-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/BenniAlencar/agent-cyber-sentinel/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/Tests-35%20Passed-FF6B00?style=for-the-badge&logo=pytest&logoColor=0D0D0D)](#-test-suite--verification)
+[![Tests](https://img.shields.io/badge/Tests-40%20Passed-FF6B00?style=for-the-badge&logo=pytest&logoColor=0D0D0D)](#-test-suite--verification)
 [![Python](https://img.shields.io/badge/Python-3.10+-FF6B00?style=for-the-badge&logo=python&logoColor=0D0D0D)](https://www.python.org/)
 [![MCP](https://img.shields.io/badge/MCP-Security%20Server-FF6B00?style=for-the-badge&logo=anthropic&logoColor=0D0D0D)](https://modelcontextprotocol.io/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-0D0D0D?style=for-the-badge&logo=apache&logoColor=FF6B00)](LICENSE)
@@ -162,6 +162,27 @@ tools = guard.get_tool_definitions()
 # • sentinel_scan_tool_call: Evaluates tool calls for SSRF and toxic execution
 # • sentinel_redact_secrets: Strips credentials from outputs
 # • sentinel_verify_pod9: Cryptographically verifies POD-9 envelopes
+```
+
+### Official OpenAI Python SDK Guard
+
+Agent Cyber Sentinel wraps the official `OpenAI()` client with pre-flight prompt screening and post-flight credential redaction:
+
+```python
+from openai import OpenAI
+from cyber_sentinel import OpenAISecurityGuard
+
+# Wrap client with zero-trust runtime screening
+guard = OpenAISecurityGuard()
+client = guard.wrap_client(OpenAI())
+
+# 1. Blocks prompt injections before tokens are spent
+# 2. Automatically redacts exposed secrets in responses
+# 3. Intercepts SSRF attacks inside model tool_calls
+completion = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Analyze system configuration..."}],
+)
 ```
 
 ### LangChain & LangGraph Integration

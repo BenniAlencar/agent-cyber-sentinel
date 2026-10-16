@@ -16,6 +16,7 @@ from cyber_sentinel.core.models import (
     ThreatFinding,
     ToxicToolBlockedError,
 )
+from cyber_sentinel.adapters.openai_guard import OpenAISecurityGuard
 from cyber_sentinel.detectors.prompt_injection import PromptInjectionDetector
 from cyber_sentinel.detectors.secret_leak import SecretLeakDetector
 from cyber_sentinel.detectors.tool_sanitizer import ToolCallSanitizer
@@ -25,6 +26,7 @@ from cyber_sentinel.version import __version__
 __all__ = [
     "__version__",
     "CyberSentinel",
+    "OpenAISecurityGuard",
     "SecurityThreatLevel",
     "ThreatCategory",
     "RemediationAction",
