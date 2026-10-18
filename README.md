@@ -8,6 +8,7 @@
 
 <br/><br/>
 
+[![PyPI](https://img.shields.io/pypi/v/agent-cyber-sentinel?color=FF6B00&style=for-the-badge&logo=pypi&logoColor=0D0D0D)](https://pypi.org/project/agent-cyber-sentinel/)
 [![CI](https://github.com/BenniAlencar/agent-cyber-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/BenniAlencar/agent-cyber-sentinel/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/Tests-40%20Passed-FF6B00?style=for-the-badge&logo=pytest&logoColor=0D0D0D)](#-test-suite--verification)
 [![Python](https://img.shields.io/badge/Python-3.10+-FF6B00?style=for-the-badge&logo=python&logoColor=0D0D0D)](https://www.python.org/)
