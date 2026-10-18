@@ -26,6 +26,12 @@
   Intercept direct and indirect prompt injections, redact API keys and secrets in real-time, block SSRF metadata theft, and produce tamper-evident Proof-of-Defense (POD-9) cryptographic envelopes.
 </p>
 
+<br/>
+
+<img src="assets/demo.svg" alt="Agent Cyber Sentinel Terminal Execution Demo" width="100%"/>
+
+<br/><br/>
+
 [Quickstart](#-quickstart-in-30-seconds) •
 [Why Agents Get Hacked](#-the-3-fatal-vulnerabilities-of-autonomous-agents) •
 [POD-9 Architecture](#-pod-9-proof-of-defense-architecture) •
