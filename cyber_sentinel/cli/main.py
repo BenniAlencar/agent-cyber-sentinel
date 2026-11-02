@@ -153,5 +153,13 @@ def verify_envelope(envelope_file: str) -> None:
         raise click.Abort()
 
 
+@cli.command("mcp")
+def mcp() -> None:
+    """Run standard Model Context Protocol (MCP) server over stdio for Claude Code, Cursor, and Codex."""
+    from cyber_sentinel.adapters.mcp_guard import McpSecurityGuard
+    guard = McpSecurityGuard()
+    guard.run_stdio()
+
+
 if __name__ == "__main__":
     cli()

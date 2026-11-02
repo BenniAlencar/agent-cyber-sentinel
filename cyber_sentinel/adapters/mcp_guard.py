@@ -137,3 +137,64 @@ class McpSecurityGuard:
             "error": f"Unknown tool '{tool_name}'",
             "content": [{"type": "text", "text": f"Tool '{tool_name}' not recognized."}],
         }
+
+    def run_stdio(self) -> None:
+        """Runs standard Model Context Protocol (MCP) JSON-RPC 2.0 loop over stdio."""
+        import sys
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        for line in sys.stdin:
+            if not line.strip():
+                continue
+            try:
+                request = json.loads(line)
+                req_id = request.get("id")
+                method = request.get("method")
+
+                if method == "tools/list":
+                    response = {
+                        "jsonrpc": "2.0",
+                        "id": req_id,
+                        "result": {
+                            "tools": self.get_tool_definitions()
+                        }
+                    }
+                elif method == "tools/call":
+                    params = request.get("params", {})
+                    name = params.get("name")
+                    args = params.get("arguments", {})
+                    result = self.call_tool(name, args)
+                    response = {
+                        "jsonrpc": "2.0",
+                        "id": req_id,
+                        "result": {
+                            "content": result.get("content", [
+                                {"type": "text", "text": json.dumps(result, indent=2)}
+                            ]),
+                            "isError": result.get("isError", False)
+                        }
+                    }
+                elif method == "initialize":
+                    response = {
+                        "jsonrpc": "2.0",
+                        "id": req_id,
+                        "result": {
+                            "protocolVersion": "2024-11-05",
+                            "capabilities": {"tools": {}},
+                            "serverInfo": {"name": "agent-cyber-sentinel", "version": "1.0.0"}
+                        }
+                    }
+                else:
+                    response = {
+                        "jsonrpc": "2.0",
+                        "id": req_id,
+                        "result": {}
+                    }
+                print(json.dumps(response), flush=True)
+            except Exception as e:
+                err_resp = {
+                    "jsonrpc": "2.0",
+                    "id": None,
+                    "error": {"code": -32603, "message": str(e)}
+                }
+                print(json.dumps(err_resp), flush=True)
+
