@@ -38,3 +38,6 @@ env/
 .vscode/
 *.swp
 *.swo
+
+dist-agensi/
+
