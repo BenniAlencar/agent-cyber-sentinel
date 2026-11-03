@@ -321,3 +321,6 @@ Engineered by **Benni Alencar** and the Benni OS Core Engineering Group
 
 
 * **[`agent-deep-research`](https://github.com/BenniAlencar/agent-deep-research)**: Autonomous multi-source deep research engine with cryptographic citation proofs & >85% token distillation.
+
+
+* **[`agent-code-sandbox`](https://github.com/BenniAlencar/agent-code-sandbox)**: Micro-second zero-dependency code sandbox with AST security guards & context token shielding.
