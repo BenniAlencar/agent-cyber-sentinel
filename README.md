@@ -285,11 +285,11 @@ The open-source stack serves as the decentralized foundation for the enterprise-
 ---
 
 👉 **Explore & Connect with the Benni OS Ecosystem:**
-* **Official Website**: [https://bennios.dev](https://bennios.dev)
-* **Benni Operator Hub**: [https://hub.bennios.dev](https://hub.bennios.dev)
-* **GitHub Organization**: [https://github.com/benni-os](https://github.com/benni-os)
+* **Official Website**: [https://benni-os.net](https://benni-os.net)
 * **Maintainer Profile**: [https://github.com/BenniAlencar](https://github.com/BenniAlencar)
-* **Documentation & Blueprints**: [https://docs.bennios.dev](https://docs.bennios.dev)
+* **LinkedIn**: [https://www.linkedin.com/in/benni-alencar/](https://www.linkedin.com/in/benni-alencar/)
+* **GitHub Organization**: [https://github.com/benni-os](https://github.com/benni-os)
+* **Documentation & Architecture**: [https://benni-os.net](https://benni-os.net)
 
 <br/>
 
