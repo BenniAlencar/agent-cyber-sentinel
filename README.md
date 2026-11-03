@@ -318,3 +318,6 @@ Agent Cyber Sentinel is licensed under the [Apache License, Version 2.0](LICENSE
 Engineered by **Benni Alencar** and the Benni OS Core Engineering Group
 
 </div>
+
+
+* **[`agent-deep-research`](https://github.com/BenniAlencar/agent-deep-research)**: Autonomous multi-source deep research engine with cryptographic citation proofs & >85% token distillation.
