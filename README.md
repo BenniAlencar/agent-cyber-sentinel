@@ -30,7 +30,7 @@
 
 <br/>
 
-<img src="assets/demo.svg" alt="Agent Cyber Sentinel Terminal Execution Demo" width="100%"/>
+<img src="assets/demo.gif" alt="Agent Cyber Sentinel Terminal Execution Demo" width="100%"/>
 
 <br/><br/>
 
