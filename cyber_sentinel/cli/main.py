@@ -161,5 +161,43 @@ def mcp() -> None:
     guard.run_stdio()
 
 
+@cli.command("doctor")
+@click.option("--json", "as_json", is_flag=True, help="Output diagnostics as JSON.")
+def doctor(as_json: bool) -> None:
+    """Probes runtime environment, POD-9 security gates, and envelope verification."""
+    from cyber_sentinel.tools.doctor import run_doctor
+
+    report = run_doctor()
+    if as_json:
+        click.echo(json.dumps(report.to_dict(), indent=2))
+        return
+    print_banner()
+    status_color = "green" if report.healthy else "red"
+    console.print(f"Health: [{status_color}]{'HEALTHY' if report.healthy else 'DEGRADED'}[/{status_color}] | Python {report.python_version}")
+    console.print(
+        f"SG-5 Injection: {'OK' if report.sg5_injection_probe_ok else 'FAIL'} | "
+        f"SG-6 Secret: {'OK' if report.sg6_secret_probe_ok else 'FAIL'} | "
+        f"SG-4 SSRF: {'OK' if report.sg4_ssrf_probe_ok else 'FAIL'} | "
+        f"POD-9 Envelope: {'OK' if report.pod9_envelope_probe_ok else 'FAIL'} ({report.probe_latency_ms} ms)"
+    )
+
+
+@cli.command("matrix")
+@click.option("--batches", default="50,200,500", help="Comma-separated batch sizes.")
+@click.option("--reps", default=2, help="Repetitions per cell.")
+@click.option("--json", "as_json", is_flag=True, help="Output matrix results as JSON.")
+def matrix(batches: str, reps: int, as_json: bool) -> None:
+    """Runs the multi-gate inspection latency benchmark matrix."""
+    from cyber_sentinel.tools.bench_matrix import BenchMatrixRunner
+
+    batch_sizes = [int(s.strip()) for s in batches.split(",") if s.strip()]
+    runner = BenchMatrixRunner(batch_sizes=batch_sizes, reps=reps)
+    data = runner.run_matrix()
+    if as_json:
+        click.echo(json.dumps(data, indent=2))
+    else:
+        click.echo(runner.format_markdown_table(data))
+
+
 if __name__ == "__main__":
     cli()

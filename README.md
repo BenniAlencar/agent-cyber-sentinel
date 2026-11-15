@@ -10,7 +10,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/agent-cyber-sentinel?color=FF6B00&style=for-the-badge&logo=pypi&logoColor=0D0D0D)](https://pypi.org/project/agent-cyber-sentinel/)
 [![CI](https://github.com/BenniAlencar/agent-cyber-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/BenniAlencar/agent-cyber-sentinel/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/Tests-40%20Passed-FF6B00?style=for-the-badge&logo=pytest&logoColor=0D0D0D)](#-test-suite--verification)
+[![Tests](https://img.shields.io/badge/Tests-44%20Passed-FF6B00?style=for-the-badge&logo=pytest&logoColor=0D0D0D)](#-test-suite--verification)
 [![Python](https://img.shields.io/badge/Python-3.10+-FF6B00?style=for-the-badge&logo=python&logoColor=0D0D0D)](https://www.python.org/)
 [![MCP](https://img.shields.io/badge/MCP-Security%20Server-FF6B00?style=for-the-badge&logo=anthropic&logoColor=0D0D0D)](https://modelcontextprotocol.io/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-0D0D0D?style=for-the-badge&logo=apache&logoColor=FF6B00)](LICENSE)
@@ -63,6 +63,38 @@ In 2026, autonomous AI agents are equipped with bash shells, web browsing tools,
 ## 🏗️ POD-9 Proof-of-Defense Architecture
 
 Agent Cyber Sentinel enforces security across the **POD-9 (Proof-of-Defense in Nine Layers)** specification:
+
+```text
+  OpenAI SDK / LangChain / CrewAI / MCP Clients / Autonomous Agents
+         │
+         ├──► CyberSentinel.inspect_prompt / inspect_output / inspect_tool_call
+         └──► McpSecurityGuard (JSON-RPC 2.0 Security Proxy)
+                       │
+                       ▼
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                        agent-cyber-sentinel                         │
+  │                                                                     │
+  │  ┌───────────────────┐  ┌───────────────────┐  ┌─────────────────┐  │
+  │  │ SG-5 Injection    │  │  SG-6 Secret      │  │ SG-4 Tool Call  │  │
+  │  │ Firewall (L5)     │─►│  Interceptor (L6) │─►│ Sanitizer (L4)  │  │
+  │  │ • Role Hijack     │  │  • API Key Regex  │  │ • SSRF Guard    │  │
+  │  │ • Canary Tokens   │  │  • Shannon Entropy│  │ • Toxic Command │  │
+  │  └───────────────────┘  └───────────────────┘  └─────────────────┘  │
+  │                                                                     │
+  │  ┌───────────────────┐  ┌───────────────────┐  ┌─────────────────┐  │
+  │  │ POD-9 Proof       │  │  Framework        │  │ Tools & CLI     │  │
+  │  │ Envelope          │  │  Adapters         │  │ • doctor        │  │
+  │  │ • SHA-256 Claims  │  │  • OpenAI Guard   │  │ • bench_matrix  │  │
+  │  │ • Tamper Verify   │  │  • LangChain/Crew │  │ • scan-text     │  │
+  │  └───────────────────┘  └───────────────────┘  └─────────────────┘  │
+  └─────────────────────────────────────────────────────────────────────┘
+         │                                         │
+         ▼                                         ▼
+   Sanitized Context & Tool Calls           Pod9ProofEnvelope (SHA-256)
+   Zero Secret Leaks / Zero SSRF            Tamper-Evident Audit Receipt
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full internal specification.
 
 ```mermaid
 graph TD
@@ -241,6 +273,71 @@ cyber-sentinel redact "My AWS key is AKIAIOSFODNN7EXAMPLE"
 
 # Cryptographically verify a POD-9 Proof-of-Defense envelope JSON file
 cyber-sentinel verify-envelope envelope.json
+
+# Probe runtime environment, POD-9 gates & envelope verification
+cyber-sentinel doctor
+
+# Run multi-gate sub-millisecond latency benchmark matrix
+cyber-sentinel matrix --batches 50,200,500
+```
+
+<br/>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png" width="100%"/>
+
+## 📁 Project Structure
+
+```text
+agent-cyber-sentinel/
+├── cyber_sentinel/
+│   ├── __init__.py                    # Public package exports
+│   ├── shield.py                      # CyberSentinel unified SG-4/SG-5/SG-6 runtime shield
+│   ├── version.py                     # Version & doctrine metadata
+│   ├── adapters/
+│   │   ├── __init__.py                # Adapter exports
+│   │   ├── crewai.py                  # CrewAI tool security wrapper
+│   │   ├── langchain.py               # LangChain callback handler guard
+│   │   ├── mcp_guard.py               # Native MCP JSON-RPC 2.0 security proxy
+│   │   └── openai_guard.py            # Drop-in OpenAI SDK client wrapper
+│   ├── cli/
+│   │   ├── __init__.py                # CLI package marker
+│   │   └── main.py                    # Click + Rich CLI (info, scan-text, redact, doctor, matrix)
+│   ├── core/
+│   │   ├── __init__.py                # Core model & envelope exports
+│   │   ├── envelope.py                # SHA-256 signed Pod9ProofEnvelope generator & verifier
+│   │   └── models.py                  # InspectionResult, ThreatFinding & exception hierarchy
+│   ├── detectors/
+│   │   ├── __init__.py                # Detector exports
+│   │   ├── prompt_injection.py        # SG-5 direct/indirect injection & canary detector
+│   │   ├── secret_leak.py             # SG-6 regex + Shannon entropy credential redactor
+│   │   └── tool_sanitizer.py          # SG-4 SSRF & destructive shell command sanitizer
+│   └── tools/
+│       ├── __init__.py                # Diagnostics & benchmark tool exports
+│       ├── bench_matrix.py            # Multi-gate latency & throughput benchmark matrix
+│       └── doctor.py                  # Environment, POD-9 gate & envelope probe
+├── docs/
+│   └── ARCHITECTURE.md                # Skill 63 POD-9 runtime defense specification
+├── examples/
+│   ├── 01_prompt_injection_firewall.py# Prompt injection & jailbreak blocking
+│   ├── 02_secret_leak_redaction.py    # Real-time API key & JWT redaction
+│   ├── 03_ssrf_and_toxic_tool_block.py# Cloud metadata SSRF & destructive tool blocking
+│   ├── 04_mcp_security_proxy.py       # MCP security proxy integration
+│   └── 05_openai_sdk_guard.py         # OpenAI SDK client guard example
+├── scripts/
+│   ├── benchmark_sentinel_latency.py  # Multi-gate inspection latency benchmark
+│   └── gate_pod9_defense_runner.py    # Fail-closed POD-9 defense & envelope gate runner
+└── tests/
+    ├── __init__.py                    # Test suite package marker
+    ├── conftest.py                    # Shared pytest fixtures
+    ├── test_adapters.py               # MCP, LangChain & CrewAI adapter tests
+    ├── test_cli.py                    # Click CLI command tests
+    ├── test_envelope.py               # POD-9 envelope signature & tamper tests
+    ├── test_openai_guard.py           # OpenAI SDK guard tests
+    ├── test_prompt_injection.py       # SG-5 prompt injection detector tests
+    ├── test_secret_leak.py            # SG-6 secret redaction & entropy tests
+    ├── test_shield.py                 # CyberSentinel unified shield tests
+    ├── test_tool_sanitizer.py         # SG-4 SSRF & toxic command tests
+    └── test_tools_and_scripts.py      # Doctor, bench_matrix & gate script tests
 ```
 
 <br/>
