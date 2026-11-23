@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0D0D0D,50:2b1500,100:FF6B00&height=200&section=header&text=agent-cyber-sentinel&fontSize=56&fontColor=ffffff&fontAlignY=38&desc=Tier-0%20Zero-Trust%20Security%20Shield%20and%20Firewall%20for%20AI%20Agents%20and%20MCP&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
+<img src="assets/banner_header.png" width="100%"/>
 
 <br/>
 
@@ -399,7 +399,7 @@ Agent Cyber Sentinel is licensed under the [Apache License, Version 2.0](LICENSE
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF6B00,50:2b1500,100:0D0D0D&height=120&section=footer" width="100%"/>
+<img src="assets/banner_footer.png" width="100%"/>
 
 **agent-cyber-sentinel** — *Part of the [Benni OS](https://benni-os.net) Core Engineering Group*
 
